@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "cypress": "^13.0.0"
+    "cypress": "^13.0.0",
+    "cypress-xpath": "^2.0.1"
   },
   "name": "cypress",
   "version": "1.0.0",
@@ -178,7 +179,6 @@
     "cypress:open": "cypress open",
     "cy:run:chrome": "cypress run -b chrome",
     "cy:run:firefox": "cypress run -b firefox"
-    
   },
   "keywords": [
     "e2e"
