@@ -1,13 +1,44 @@
-describe('testing websites', () => {
+describe('Testing Login', () => {
     beforeEach(() => {
-        cy.visit('https://www.atlassian.com/software/jira')
+        cy.visit('http://the-internet.herokuapp.com/login');
 
     })
-    it ('should find Text', () => {
-        cy.title().should('include', 'Software')
-        //cy.get('.nav-bar > .relative > :nth-child(3)').click()
-        cy.xpath('//*[@id="jira"]/header/div/div[1]/div/div[2]/a[2]').click()
+    it ('login with valid credentials', () => {
+        cy.xpath('//*[@id="username"]').type('tomsmith');
+        cy.xpath('//*[@id="password"]').type('SuperSecretPassword!');
+        cy.xpath('//*[@id="login"]/button/i').click();
+        cy.xpath('//*[@id="flash"]').should('be.visible').and('contain', 'You logged into a secure area!');
+        cy.xpath('//*[@id="content"]/div/a/i').should('be.visible');
+    })
+
+
+    it ('login Fail with invalid Credentials ', () => {
+        cy.xpath('//*[@id="username"]').type('tomsmith');
+        cy.xpath('//*[@id="password"]').type('SuperSecetPassword!');
+        cy.xpath('//*[@id="login"]/button/i').click();
+        cy.xpath('//*[@id="flash"]').should('be.visible').and('contain', 'Your password is invalid!');
         
+        
+    })
+
+    it ('login Fail with empty username/password ', () => {
+        cy.xpath('//*[@id="username"]').type('tomsmith');
+        //cy.xpath('//*[@id="password"]').type('')
+        cy.xpath('//*[@id="login"]/button/i').click();
+        cy.xpath('//*[@id="flash"]').should('be.visible').and('contain', 'Your password is invalid!');
+        
+    })
+    
+    // Validation Messages
+
+    it ('should clear the welcomen message and show the logout message', () => {
+        cy.xpath('//*[@id="username"]').type('tomsmith');
+        cy.xpath('//*[@id="password"]').type('SuperSecretPassword!');
+        cy.xpath('//*[@id="login"]/button/i').click();
+        cy.xpath('//*[@id="flash"]').should('be.visible').and('contain', 'You logged into a secure area!');
+        cy.xpath('//*[@id="content"]/div/a/i').should('be.visible');
+        cy.xpath('//*[@id="content"]/div/a/i').click();
+        cy.xpath('//*[@id="flash"]').should('be.visible').and('contain', ' You logged out of the secure area!');
     })
 
 })
